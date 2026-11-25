@@ -1,0 +1,153 @@
+/* Lamplight Café — ของบนจอทุกชิ้นยืมรูปจากของจริงในร้าน: ป้าย OPEN · ป้ายราคา · ใบเสร็จ · ทิชชู่ · ปากกาแดงครู */
+:root {
+  --ink: #2a1d16; --cream: #fff4e2; --paper: #f6efe1; --kraft: #e8dcc3; --amber: #ffc979; --red: #b8402c; --green: #2f4c40;
+  --hand: "Caveat", "Ink Free", "Segoe Print", cursive; --th: "Mali", "Leelawadee UI", "Tahoma", sans-serif; --en: "Nunito", "Segoe UI", Arial, sans-serif;
+  --mono: "Courier Prime", "Courier New", monospace;
+}
+html, body { margin: 0; height: 100%; background: #1b1512; overflow: hidden; font-family: var(--th); color: var(--cream); }
+#stage { position: fixed; inset: 0; }
+#stage canvas { display: block; width: 100%; height: 100%; }
+#ui { position: fixed; inset: 0; pointer-events: none; }
+#ui::before { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 90% at 50% 40%, transparent 55%, rgba(12, 8, 6, .55) 100%); }
+#ui > section > *, #ui .tags, #ui .receipt, #ui .talk, #ui .back, #ui .napkin { pointer-events: auto; }
+[hidden] { display: none !important; }
+button { font: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+/* ---------- หน้าเปิด ---------- */
+.title { position: absolute; inset: 0; display: flex; align-items: center; background: linear-gradient(90deg, rgba(18, 12, 9, .92) 0%, rgba(18, 12, 9, .78) 34%, rgba(18, 12, 9, 0) 62%); transition: opacity .9s ease; }
+.title.leaving { opacity: 0; }
+.title .card { width: min(520px, 88vw); margin-left: clamp(20px, 7vw, 120px); }
+.kicker { margin: 0 0 6px; font: 600 14px/1.4 var(--th); letter-spacing: .08em; color: #d9b98a; }
+.title h1 { margin: 0; font: 700 clamp(64px, 9vw, 118px)/.92 var(--hand); color: var(--cream); letter-spacing: .01em; }
+.title h1 span { color: var(--amber); }
+.story { margin: 18px 0 10px; font: 400 18px/1.65 var(--th); color: #eadcc4; max-width: 30em; }
+.mission { margin: 0 0 22px; font: 400 16px/1.6 var(--th); color: #d8c7aa; }
+.mission b { color: var(--amber); font-weight: 600; margin-right: 6px; }
+.roast { border: 0; padding: 0; margin: 0 0 26px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.roast legend { font: 600 13px var(--th); color: #bfa682; margin-bottom: 8px; padding: 0; }
+.roast label { position: relative; cursor: pointer; }
+.roast input { position: absolute; opacity: 0; }
+.roast span { display: block; padding: 10px 12px 11px; background: var(--kraft); color: var(--ink); border-radius: 3px 3px 3px 14px; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .12); transition: transform .15s, background .15s; }
+.roast b { display: block; font: 600 17px var(--th); }
+.roast i { display: block; font: 400 12.5px/1.45 var(--th); color: #5c4a3c; margin-top: 3px; font-style: normal; }
+.roast label:nth-child(3) span { background: #d8c09a; } .roast label:nth-child(4) span { background: #b88f63; } .roast label:nth-child(4) i { color: #3e2a1c; }
+.roast input:checked + span { transform: translateY(-4px); box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .12), 0 0 0 2px var(--amber); }
+.opensign { position: relative; display: inline-flex; flex-direction: column; align-items: center; background: none; border: 0; padding: 34px 0 0; transform-origin: 50% 0; }
+.opensign .cord { position: absolute; top: 0; left: 50%; width: 120px; height: 36px; transform: translateX(-50%); background: linear-gradient(to bottom right, transparent 49%, #9c8462 50%, transparent 52%) left / 50% 100% no-repeat, linear-gradient(to bottom left, transparent 49%, #9c8462 50%, transparent 52%) right / 50% 100% no-repeat; }
+.opensign .board { display: flex; flex-direction: column; align-items: center; min-width: 210px; padding: 10px 26px 12px; background: linear-gradient(#7b4f30, #64402a); border-radius: 6px; color: var(--cream); font: 700 48px/1 var(--hand); letter-spacing: .06em; box-shadow: inset 0 0 0 3px #4d311f, inset 0 0 0 5px #8f6240; }
+.opensign small { font: 500 15px/1.6 var(--th); letter-spacing: 0; color: #f3dcb8; }
+.opensign:not(:disabled):hover { animation: swing 1.2s ease-in-out; }
+.opensign:disabled { cursor: progress; opacity: .75; }
+@keyframes swing { 0% { transform: rotate(0); } 25% { transform: rotate(3deg); } 55% { transform: rotate(-2deg); } 80% { transform: rotate(1deg); } 100% { transform: rotate(0); } }
+.fine { margin: 18px 0 0; font: 400 13px/1.6 var(--th); color: #a99377; }
+
+/* ---------- ป้ายเครื่องมือมุมซ้ายบน (ป้ายราคาห้อยเชือก) ---------- */
+.tags { position: absolute; top: 16px; left: 18px; display: flex; gap: 8px; flex-wrap: wrap; }
+.tags button { background: var(--paper); color: var(--ink); border: 0; padding: 6px 12px 7px; font: 500 14px var(--th); border-radius: 2px 2px 2px 9px; box-shadow: 0 1px 0 rgba(0, 0, 0, .35); }
+.tags button:hover { background: #fff; }
+.tags button[data-act="thai"]:not(.on), .tags button[data-act="sound"]:not(.on) { background: #b9ab95; color: #4a3a2d; }
+
+/* ---------- ใบเสร็จ ---------- */
+.receipt { position: absolute; top: 64px; right: 22px; width: 248px; padding: 16px 16px 26px; background: #fbf8f1; color: #2a2622; font: 400 14px/1.5 var(--mono); box-shadow: 0 6px 18px rgba(0, 0, 0, .35); transform: rotate(1.2deg); clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), 94% 100%, 88% calc(100% - 8px), 82% 100%, 76% calc(100% - 8px), 70% 100%, 64% calc(100% - 8px), 58% 100%, 52% calc(100% - 8px), 46% 100%, 40% calc(100% - 8px), 34% 100%, 28% calc(100% - 8px), 22% 100%, 16% calc(100% - 8px), 10% 100%, 4% calc(100% - 8px), 0 100%); }
+.receipt.print { animation: print .7s steps(9) both; }
+@keyframes print { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+.receipt .head { text-align: center; font-weight: 700; letter-spacing: .12em; margin-bottom: 10px; }
+.receipt .head small { display: block; font-weight: 400; letter-spacing: 0; font-size: 11.5px; color: #6c655c; }
+.receipt .line { display: flex; justify-content: space-between; gap: 8px; }
+.receipt .mod { padding-left: 18px; font-size: 12.5px; color: #555; }
+.receipt .rule { border-top: 1px dashed #777; margin: 8px 0; }
+.receipt .total { font-weight: 700; font-size: 15.5px; }
+.receipt .meta { margin-top: 6px; font-size: 12.5px; letter-spacing: .05em; }
+.receipt .thanks { margin-top: 10px; text-align: center; font: 700 22px var(--hand); color: var(--red); }
+
+/* ---------- ทิชชู่ที่ Luna เขียนรหัส Wi-Fi ---------- */
+.napkin { position: absolute; left: 22px; top: 40%; width: 200px; padding: 18px 18px 14px; background: #fffdf8; color: #24324a; transform: rotate(-3deg); box-shadow: 0 6px 16px rgba(0, 0, 0, .3); border-radius: 2px; animation: drop .6s ease-out; }
+.napkin span { display: block; font: 700 30px/1.1 var(--hand); }
+.napkin small { display: block; margin-top: 6px; font: 400 12px var(--th); color: #8a7d6d; }
+@keyframes drop { from { transform: translateY(-30px) rotate(-8deg); opacity: 0; } }
+
+/* ---------- พื้นที่คุย ---------- */
+.talk { position: absolute; left: 50%; bottom: 18px; width: min(900px, 94vw); transform: translateX(-50%); display: flex; flex-direction: column; gap: 10px; }
+#hud::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 46vh; background: linear-gradient(to bottom, transparent, rgba(16, 10, 7, .55) 40%, rgba(16, 10, 7, .86)); pointer-events: none; }
+.sub { position: relative; text-align: center; padding: 0 30px; }
+.sub.pop { animation: rise .35s ease-out; }
+@keyframes rise { from { transform: translateY(8px); opacity: 0; } }
+.sub .who { font: 700 22px var(--hand); color: var(--amber); letter-spacing: .04em; }
+.sub .en { margin: 0; font: 700 clamp(21px, 2.3vw, 29px)/1.38 var(--en); color: #fff8ec; text-shadow: 0 2px 14px rgba(0, 0, 0, .75); }
+.sub .en b { color: var(--amber); font-weight: 800; }
+.sub .th { margin: 4px 0 0; font: 400 17px/1.5 var(--th); color: #eadbc2; text-shadow: 0 1px 8px rgba(0, 0, 0, .8); }
+.sub .again { margin-top: 4px; background: none; border: 0; color: #d4bb95; font: 400 13px var(--th); text-decoration: underline; text-underline-offset: 3px; padding: 2px 6px; }
+.me { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.you { margin: 0; font: 600 17px var(--en); color: #cfe0ff; text-shadow: 0 1px 8px rgba(0, 0, 0, .8); }
+.you .who { font: 500 14px var(--th); color: #9fb7e8; margin-right: 8px; }
+.pen { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 4px 12px; max-width: 760px; padding: 8px 14px 9px; background: var(--paper); color: var(--ink); border-radius: 2px; transform: rotate(-.6deg); box-shadow: 0 4px 12px rgba(0, 0, 0, .35); }
+.pen.pop { animation: rise .4s ease-out; }
+.pen .red { font: 700 27px/1.1 var(--hand); color: var(--red); }
+.pen .why { font: 400 13.5px/1.5 var(--th); color: #5c4a3c; }
+.pen .hear { background: none; border: 1px solid #b8a68a; border-radius: 2px; font: 500 12.5px var(--th); color: #5c4a3c; padding: 1px 8px; }
+.hints { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.hints .row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; }
+.hints .lab { font: 500 13px var(--th); color: #c9b08a; }
+.slip { background: var(--kraft); color: var(--ink); border: 0; padding: 6px 12px 7px; border-radius: 2px; font: 700 15.5px/1.3 var(--en); text-align: left; box-shadow: 0 1px 0 rgba(0, 0, 0, .4); }
+.slip:nth-child(even) { transform: rotate(.7deg); } .slip:nth-child(odd) { transform: rotate(-.5deg); }
+.slip:hover { background: #f5ead3; }
+.slip i { display: block; font: 400 12.5px var(--th); font-style: normal; color: #6b5645; }
+.slip.small { font-size: 13.5px; padding: 4px 10px 5px; background: #d9ccb2; }
+.hints .words { font: 700 15px var(--en); color: #f0dfc2; }
+.hints .more { background: none; border: 1px solid #8f7a5f; color: #e6d3b3; padding: 3px 12px; border-radius: 2px; font: 500 13.5px var(--th); }
+.say { display: flex; align-items: center; gap: 12px; padding: 8px 10px 8px 18px; background: #fbf7ee; border-radius: 3px; box-shadow: 0 8px 22px rgba(0, 0, 0, .45), inset 0 0 0 1px #e7dcc8; }
+.say input { flex: 1; min-width: 0; border: 0; background: transparent; font: 700 21px var(--en); color: #2b211b; padding: 8px 0; }
+.say input:focus { outline: none; }
+.say input::placeholder { font: 400 16.5px var(--th); color: #9b8b7a; }
+.stamp { flex: none; background: transparent; color: var(--red); border: 2.5px solid var(--red); border-radius: 6px; padding: 4px 16px 5px; font: 600 18px var(--th); transform: rotate(-4deg); }
+.stamp:hover { background: var(--red); color: #fff6ec; }
+.back { position: absolute; left: 50%; bottom: 210px; transform: translateX(-50%); background: var(--paper); color: var(--ink); border: 0; padding: 8px 18px; border-radius: 2px; font: 600 15px var(--th); box-shadow: 0 4px 12px rgba(0, 0, 0, .4); }
+#ui.focused .hints, #ui.focused .me { display: none; }
+
+/* ---------- ป้ายชื่อของเวลาชี้ ---------- */
+.tooltip { position: fixed; left: 0; top: 0; pointer-events: none; padding: 6px 10px 7px; background: rgba(24, 16, 12, .92); border-radius: 3px; box-shadow: 0 0 0 1px rgba(255, 201, 121, .35); }
+.tooltip b { display: block; font: 800 14.5px var(--en); color: #fff3df; }
+.tooltip span { display: block; font: 400 13px var(--th); color: #d9c3a0; }
+
+/* ---------- สมุดจด ---------- */
+.book { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(10, 7, 5, .6); pointer-events: auto; }
+.book .paper { position: relative; width: min(640px, 92vw); max-height: 78vh; overflow: auto; padding: 26px 34px 30px 64px; background: #fbf7ee repeating-linear-gradient(transparent 0 31px, #cfdbe8 31px 32px); color: var(--ink); border-radius: 2px; box-shadow: 0 20px 50px rgba(0, 0, 0, .5); }
+.book .paper::before { content: ""; position: absolute; left: 46px; top: 0; bottom: 0; width: 2px; background: #e8a49a; }
+.book h2 { margin: 0 0 8px; font: 700 34px var(--hand); }
+.book .close { position: absolute; top: 14px; right: 14px; background: none; border: 1px solid #b8a68a; color: #5c4a3c; font: 500 13px var(--th); border-radius: 2px; }
+.book p { margin: 0 0 10px; font: 600 16px/1.55 var(--en); }
+.book p b { display: inline-block; min-width: 46px; font: 500 13px var(--th); color: #8a7562; }
+.book p.y { color: #23408a; }
+.book p i { display: block; font: 400 13.5px var(--th); font-style: normal; color: #7a6656; padding-left: 50px; }
+.book .red { display: block; padding-left: 50px; font: 700 24px/1.2 var(--hand); color: var(--red); }
+.book .why { display: block; padding-left: 50px; font: 400 13px var(--th); color: #7a6656; }
+
+/* ---------- จบฉาก ---------- */
+.end { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(10, 7, 5, .55); pointer-events: auto; animation: fade .8s ease; }
+@keyframes fade { from { opacity: 0; } }
+.end .sheet { width: min(620px, 92vw); max-height: 86vh; overflow: auto; padding: 28px 34px 30px; background: var(--paper); color: var(--ink); border-radius: 2px; box-shadow: 0 24px 60px rgba(0, 0, 0, .55); transform: rotate(-.4deg); }
+.end h2 { margin: 2px 0 10px; font: 700 40px/1.05 var(--hand); color: var(--ink); }
+.end h3 { margin: 18px 0 6px; font: 600 15px var(--th); color: #6b5645; border-bottom: 1px solid #ddcfb6; padding-bottom: 4px; }
+.end .kicker { color: #9c7c55; }
+.end .stat { margin: 0; font: 400 16px/1.6 var(--th); }
+.end .manner { margin: 12px 0 0; font: 400 17px/1.5 var(--th); }
+.end .manner small { display: block; font-size: 14px; color: #6b5645; }
+.end .pens { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.end .pens s { display: block; font: 600 15px var(--en); color: #7a6a5c; }
+.end .pens .red { display: block; font: 700 25px/1.1 var(--hand); color: var(--red); }
+.end .pens small { display: block; font: 400 13px var(--th); color: #6b5645; }
+.end .vocab, .end .ideas, .end .clean { margin: 0; font: 600 15.5px/1.6 var(--en); }
+.end .ideas { font: 400 15px var(--th); }
+.end .btns { display: flex; gap: 12px; margin-top: 22px; }
+.end .btns button { background: var(--green); color: var(--cream); border: 0; padding: 10px 20px; border-radius: 3px; font: 600 16px var(--th); }
+.end .btns .ghost { background: none; color: var(--ink); box-shadow: inset 0 0 0 1.5px #b8a68a; }
+
+@media (max-width: 760px) {
+  .receipt { width: 190px; font-size: 12px; top: 56px; right: 10px; padding: 10px 10px 20px; }
+  .talk { bottom: 10px; }
+  .sub .en { font-size: 19px; }
+  .title { background: linear-gradient(180deg, rgba(18, 12, 9, .3), rgba(18, 12, 9, .92) 45%); align-items: flex-end; padding-bottom: 24px; }
+  .roast { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .opensign:hover { animation: none; } }
