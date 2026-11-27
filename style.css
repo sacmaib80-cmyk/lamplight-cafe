@@ -438,3 +438,17 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--amber); out
 .chip i { color: #e3cfae; }
 .chip.on { background: rgba(24, 16, 12, .88); box-shadow: inset 0 0 0 2px var(--amber); }
 .chips .ask { color: #e9dcc6; }
+/* เจ้าของ: "แบบคอมยังไม่ค่อยสวย เอาไว้ตรงกลาง" → จอกว้าง: กล่อง Luna การ์ด ช่องพิมพ์ อยู่กลางแนวเดียวกัน มุมมนเท่ากัน (มือถือคงซ้าย/ขวาแบบแชท) */
+@media (min-width: 521px) {
+  .sub { align-self: center; text-align: center; border-radius: 12px; min-width: min(520px, 100%); }
+  .sub .who { justify-content: center; position: relative; }
+  .sub .trall { position: absolute; right: 0; top: 50%; transform: translateY(-50%); }
+  .sub .th { text-align: center; }
+  .chips { justify-content: center; align-items: flex-end; }
+  .chip, .chips .ask { border-radius: 8px; }
+  .chip > span { align-items: center; text-align: center; }
+  .me { align-items: center; }
+  .you { align-self: center; text-align: center; }
+  .tip { text-align: center; }
+  .say { width: min(620px, 100%); align-self: center; }
+}
