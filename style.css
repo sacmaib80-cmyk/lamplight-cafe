@@ -70,6 +70,9 @@ button:focus-visible, input:focus-visible { outline: 2px solid var(--amber); out
 /* ---------- ทิชชู่ที่ Luna เขียนรหัส Wi-Fi ---------- */
 .napkin { position: absolute; left: 22px; top: 30%; width: 200px; padding: 18px 18px 14px; background: #fffdf8; color: #24324a; transform: rotate(-3deg); box-shadow: 0 6px 16px rgba(0, 0, 0, .3); border-radius: 2px; animation: drop .6s ease-out; }
 .napkin span { display: block; font: 700 30px/1.1 var(--hand); }
+.napkin.map { width: 250px; }
+@media (max-width: 520px) { .napkin.map { width: 196px; top: 70px; } }
+.napkin svg { display: block; width: 100%; height: auto; }
 .napkin small { display: block; margin-top: 6px; font: 400 12px var(--th); color: #8a7d6d; }
 @keyframes drop { from { transform: translateY(-30px) rotate(-8deg); opacity: 0; } }
 
